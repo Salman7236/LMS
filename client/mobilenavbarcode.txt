@@ -1,0 +1,33 @@
+const MobileNavbar = () => {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button
+          size="icon"
+          className="rounded-full bg-gray-200 hover:bg-gray-200"
+          variant="outline"
+        >
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="flex flex-col">
+        <SheetHeader className="flex flex-row items-center justify-between mt-2">
+          <SheetTitle>E-learning</SheetTitle>
+          <DarkMode />
+        </SheetHeader>
+        <Separator className="mr-2" />
+        <nav className="flex flex-col space-y-4">
+          <span>My Learning</span>
+          <span>Edit Profile</span>
+          <p>Log Out</p>
+        </nav>
+        <SheetFooter>
+          <Button type="submit">Save changes</Button>
+          <SheetClose asChild>
+            <Button variant="outline">Close</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+};
