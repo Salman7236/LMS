@@ -25,6 +25,9 @@ app.use(
   })
 );
 
+// Serve the uploads folder as static files
+//app.use('/uploads', express.static('uploads'));
+
 // APIs
 app.use("/api/v1/user", userRoute);
 
