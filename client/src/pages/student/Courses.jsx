@@ -3,7 +3,7 @@ import React from "react";
 import Course from "./Course.jsx";
 
 const Courses = () => {
-  const isLoading = true;
+  const isLoading = false;
   return (
     <div className="bg-gray-50">
       <div className="max-w-7xl mx-auto p-6">
