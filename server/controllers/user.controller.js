@@ -97,11 +97,10 @@ export const logoutUser = async (_, res) => {
       success: true,
     });
   } catch (error) {
-    console.error("Error logging in user:", error);
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Failed to logout user",
-      error: error.message,
     });
   }
 };
@@ -129,27 +128,27 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-export const updateProfile = async (req, res) => {
-  try {
-    const userID = req.id;
-    const { name } = req.body;
-    const profilePhoto = req.file;
+// export const updateProfile = async (req, res) => {
+//   try {
+//     const userID = req.id;
+//     const { name } = req.body;
+//     const profilePhoto = req.file;
 
-    const user = await User.findById(userID);
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-        success: false,
-      });
-    }
+//     const user = await User.findById(userID);
+//     if (!user) {
+//       return res.status(404).json({
+//         message: "User not found",
+//         success: false,
+//       });
+//     }
 
-    const updatedData = {name, photoUrl}
+//     const updatedData = {name, photoUrl}
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to update Profile",
-    });
-  }
-};
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Failed to update Profile",
+//     });
+//   }
+// };
