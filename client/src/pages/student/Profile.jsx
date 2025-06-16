@@ -13,9 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import React from "react";
+import Course from "./Course";
 
 const Profile = () => {
   const isLoading = false;
+  const enrolledCourses = [1];
   return (
     <div className="my-24 max-w-4xl mx-auto px-4">
       <h1 className="font-bold text-2xl text-center md:text-left">Profile</h1>
@@ -93,6 +95,18 @@ const Profile = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+        </div>
+      </div>
+      <div>
+        <h1 className="font-semibold text-lg text-left">
+          Courses you're enrolled in
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-5">
+          {enrolledCourses.length === 0 ? (
+            <h1 className="text-left">You are not enrolled in any courses.</h1>
+          ) : (
+            enrolledCourses.map((course, index) => <Course key={index} />)
+          )}
         </div>
       </div>
     </div>
