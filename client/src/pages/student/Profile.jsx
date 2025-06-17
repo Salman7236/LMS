@@ -19,17 +19,19 @@ import { useLoadUserQuery } from "@/features/api/authAPI";
 const Profile = () => {
   const { data, isLoading } = useLoadUserQuery();
 
-
   if (isLoading) return <h1>Profile Loading...</h1>;
 
-  const { user } = data;
+  const user = data && data.user;
   return (
     <div className="my-24 max-w-4xl mx-auto px-4">
       <h1 className="font-bold text-2xl text-center md:text-left">Profile</h1>
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8 my-5">
         <div className="flex flex-col items-center">
           <Avatar className="w-24 h-24 md:h-32 md:w-32 mb-4">
-            <AvatarImage src={user.photoUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
+            <AvatarImage
+              src={user.photoUrl || "https://github.com/shadcn.png"}
+              alt="@shadcn"
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
@@ -110,7 +112,9 @@ const Profile = () => {
           {user.enrolledCourses.length === 0 ? (
             <h1 className="text-left">You are not enrolled in any courses.</h1>
           ) : (
-            user.enrolledCourses.map((course) => <Course course={course} key={course._id} />)
+            user.enrolledCourses.map((course) => (
+              <Course course={course} key={course._id} />
+            ))
           )}
         </div>
       </div>

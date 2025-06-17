@@ -89,7 +89,7 @@ const Login = () => {
 
   return (
     <div className="flex w-full max-w-sm flex-col gap-6 items-center justify-center mt-20">
-      <Tabs defaultValue="signup">
+      <Tabs defaultValue="login">
         <TabsList>
           <TabsTrigger value="signup">Signup</TabsTrigger>
           <TabsTrigger value="login">Login</TabsTrigger>
