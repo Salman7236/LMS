@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -12,16 +13,53 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Course from "./Course";
-import { useLoadUserQuery } from "@/features/api/authAPI";
+import {
+  useLoadUserQuery,
+  useUpdateUserMutation,
+} from "@/features/api/authAPI";
 
 const Profile = () => {
+  const [name, setName] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState("");
   const { data, isLoading } = useLoadUserQuery();
+  const [
+    updateUser,
+    {
+      data: updateUserData,
+      isLoading: updateUserIsLoading,
+      error,
+      isError,
+      isSuccess,
+    },
+  ] = useUpdateUserMutation();
+
+  const onChangeHandler = (e) => {
+    const file = e.target.files?.[0];
+    if (file) setProfilePhoto(file);
+  };
 
   if (isLoading) return <h1>Profile Loading...</h1>;
 
   const user = data && data.user;
+
+  const updateUserHandler = async () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("profilePhoto", profilePhoto);
+    await updateUser(formData);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message || "Profile Updated.");
+    }
+    if (isError) {
+      toast.error(error.message || "Failed to update profile :(");
+    }
+  }, [error, data, isSuccess, isError]);
+
   return (
     <div className="my-24 max-w-4xl mx-auto px-4">
       <h1 className="font-bold text-2xl text-center md:text-left">Profile</h1>
@@ -29,7 +67,7 @@ const Profile = () => {
         <div className="flex flex-col items-center">
           <Avatar className="w-24 h-24 md:h-32 md:w-32 mb-4">
             <AvatarImage
-              src={user.photoUrl || "https://github.com/shadcn.png"}
+              src={user.photoURL || "https://github.com/shadcn.png"}
               alt="@shadcn"
             />
             <AvatarFallback>CN</AvatarFallback>
@@ -79,17 +117,24 @@ const Profile = () => {
                   <Label>Name</Label>
                   <Input
                     type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder="Name"
                     className="col-span-3"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label>Profile Picture</Label>
-                  <Input type="file" accept="image/*" className="col-span-3" />
+                  <Input
+                    onChange={onChangeHandler}
+                    type="file"
+                    accept="image/*"
+                    className="col-span-3"
+                  />
                 </div>
               </div>
               <DialogFooter>
-                <Button disabled={isLoading}>
+                <Button disabled={isLoading} onClick={updateUserHandler}>
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please

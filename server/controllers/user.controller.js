@@ -128,27 +128,40 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-// export const updateProfile = async (req, res) => {
-//   try {
-//     const userID = req.id;
-//     const { name } = req.body;
-//     const profilePhoto = req.file;
+export const updateProfile = async (req, res) => {
+  try {
+    const userID = req.id;
+    const { name } = req.body;
+    const profilePhoto = req.file;
 
-//     const user = await User.findById(userID);
-//     if (!user) {
-//       return res.status(404).json({
-//         message: "User not found",
-//         success: false,
-//       });
-//     }
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
 
-//     const updatedData = {name, photoUrl}
+    // extract publicId of old image if it exists
+    if (user.photoURL) {
+      const publicId = user.photoURL.split("/").pop().split(".")[0]; //extract publicId
+    }
 
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       success: false,
-//       message: "Failed to update Profile",
-//     });
-//   }
-// };
+    const updatedData = { name, photoURL };
+    const updateUser = await user
+      .findByIdAndUpdate(userID, updatedData, { new: true })
+      .select("-password");
+
+    return res.status(200).json({
+      success: true,
+      user: updatedUser,
+      message: "Profile updated successfully.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update Profile",
+    });
+  }
+};
