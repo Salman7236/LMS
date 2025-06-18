@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const RichTextEditor = () => {
-  return (
-    <div>
-        
-    </div>
-  )
-}
+  return <div>RichTextEditor</div>;
+};
 
-export default RichTextEditor
+export default RichTextEditor;

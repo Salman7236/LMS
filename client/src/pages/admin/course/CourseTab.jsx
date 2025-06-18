@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -47,8 +48,8 @@ const CourseTab = () => {
             />
           </div>
           <div>
-            {/* <Label>Description</Label>
-            <RichTextEditor /> */}
+            <Label>Description</Label>
+            <Textarea placeholder="Write a description of your course here." />
           </div>
         </div>
       </CardContent>

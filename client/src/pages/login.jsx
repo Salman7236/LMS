@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import {
   useLoginUserMutation,
   useRegisterUserMutation,
-} from "@/features/api/authAPI";
+} from "@/features/api/authApi";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
