@@ -47,3 +47,58 @@ export const getCreatorCourses = async (req, res) => {
     });
   }
 };
+
+export const editCourse = async (req, res) => {
+  try {
+    const courseID = req.params.courseID;
+    const {
+      courseTitle,
+      subtitle,
+      description,
+      category,
+      coursePrice,
+      courseLevel,
+    } = req.body;
+    const thumbnail = req.file;
+
+    let course = await Course.findById(courseID);
+    if (!course) {
+      return res.status(404).json({
+        message: "Course not found.",
+      });
+    }
+
+    let courseThumbnail;
+    if (thumbnail) {
+      if (course.courseThumbnail) {
+        const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
+        // await delete from cloudinary (publicID)
+      }
+      // courseThumbnail = await upload media(thumbnail.path)
+    }
+
+    const updateData = {
+      courseTitle,
+      subtitle,
+      description,
+      category,
+      coursePrice,
+      courseLevel,
+      courseThumbnail,
+    };
+
+    course = await Course.findByIdAndUpdate(courseID, updateData, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      course,
+      message: "Course updated successfully.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Failed to update course details :(",
+    });
+  }
+};
