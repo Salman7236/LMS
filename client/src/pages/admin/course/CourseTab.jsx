@@ -131,6 +131,17 @@ const CourseTab = () => {
                 </SelectContent>
               </Select>
             </div>
+            <div>
+              <Label>Price</Label>
+              <Input
+                type="number"
+                name="price"
+                value={input.coursePrice}
+                onChange={changeEventHandler}
+                placeholder="199"
+                className="w-fit"
+              />
+            </div>
           </div>
         </div>
       </CardContent>
