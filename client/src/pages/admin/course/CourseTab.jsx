@@ -33,10 +33,30 @@ const CourseTab = () => {
     courseThumbnail: "",
   });
 
+  const [previewThumbnail, setPreviewThumbnail] = useState("");
   const navigate = useNavigate();
   const changeEventHandler = (e) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
+  };
+
+  const selectCategory = (value) => {
+    setInput({ ...input, category: value });
+  };
+
+  const selectCourseLevel = (value) => {
+    setInput({ ...input, courseLevel: value });
+  };
+
+  // Get File
+  const selectThumbnail = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setInput({ ...input, courseThumbnail: file });
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => setPreviewThumbnail(fileReader.result);
+      fileReader.readAsDataURL(file);
+    }
   };
 
   const isPublished = false;
@@ -93,7 +113,7 @@ const CourseTab = () => {
           <div className="flex items-center gap-5">
             <div>
               <Label>Category</Label>
-              <Select>
+              <Select onValueChange={selectCategory}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
@@ -122,7 +142,7 @@ const CourseTab = () => {
             </div>
             <div>
               <Label>Course Level</Label>
-              <Select>
+              <Select onValueChange={selectCourseLevel}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select course level" />
                 </SelectTrigger>
@@ -150,7 +170,19 @@ const CourseTab = () => {
           </div>
           <div>
             <Label>Course Thumbnail</Label>
-            <Input type="file" accept="image/*" className="w-fit" />
+            <Input
+              type="file"
+              onChange={selectThumbnail}
+              accept="image/*"
+              className="w-fit"
+            />
+            {previewThumbnail && (
+              <img
+                src={previewThumbnail}
+                className="e-64 my-2"
+                alt="Course Thumbnail"
+              />
+            )}
           </div>
           <div>
             <Button onClick={() => navigate("/admin/course")} variant="outline">
