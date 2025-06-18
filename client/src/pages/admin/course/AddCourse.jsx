@@ -45,7 +45,7 @@ const AddCourse = () => {
     <div className="flex-1 mx-10">
       <div className="mb-4">
         <h1 className="font-bold text-xl">
-          Add details of your new course here
+          Add some basic details of your new course here
         </h1>
       </div>
       <div className="space-y-4">
