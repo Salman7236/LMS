@@ -59,6 +59,10 @@ const CourseTab = () => {
     }
   };
 
+  const updateCourseHandler = () => {
+    console.log(input);
+  };
+
   const isPublished = false;
   const isLoading = false;
 
@@ -84,7 +88,7 @@ const CourseTab = () => {
             <Label>Title</Label>
             <Input
               type="text"
-              name="title"
+              name="courseTitle"
               value={input.courseTitle}
               onChange={changeEventHandler}
               placeholder="e.g., Full-stack Development"
@@ -160,7 +164,7 @@ const CourseTab = () => {
               <Label>Price</Label>
               <Input
                 type="number"
-                name="price"
+                name="coursePrice"
                 value={input.coursePrice}
                 onChange={changeEventHandler}
                 placeholder="199"
@@ -188,7 +192,7 @@ const CourseTab = () => {
             <Button onClick={() => navigate("/admin/course")} variant="outline">
               Cancel
             </Button>
-            <Button disabled={isLoading}>
+            <Button disabled={isLoading} onClick={updateCourseHandler}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
