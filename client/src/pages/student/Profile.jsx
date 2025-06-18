@@ -23,7 +23,7 @@ import {
 const Profile = () => {
   const [name, setName] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
-  const { data, isLoading } = useLoadUserQuery();
+  const { data, isLoading, refetch } = useLoadUserQuery();
   const [
     updateUser,
     {
@@ -40,10 +40,6 @@ const Profile = () => {
     if (file) setProfilePhoto(file);
   };
 
-  if (isLoading) return <h1>Profile Loading...</h1>;
-
-  const user = data && data.user;
-
   const updateUserHandler = async () => {
     const formData = new FormData();
     formData.append("name", name);
@@ -52,13 +48,22 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    refetch();
+  }, []);
+
+  useEffect(() => {
     if (isSuccess) {
+      refetch();
       toast.success(data.message || "Profile Updated.");
     }
     if (isError) {
       toast.error(error.message || "Failed to update profile :(");
     }
-  }, [error, data, isSuccess, isError]);
+  }, [error, updateUserData, isSuccess, isError]);
+
+  if (isLoading) return <h1>Profile Loading...</h1>;
+
+  const user = data && data.user;
 
   return (
     <div className="my-24 max-w-4xl mx-auto px-4">
@@ -67,7 +72,7 @@ const Profile = () => {
         <div className="flex flex-col items-center">
           <Avatar className="w-24 h-24 md:h-32 md:w-32 mb-4">
             <AvatarImage
-              src={user.photoURL || "https://github.com/shadcn.png"}
+              src={user?.photoURL || "https://github.com/shadcn.png"}
               alt="@shadcn"
             />
             <AvatarFallback>CN</AvatarFallback>
@@ -134,8 +139,11 @@ const Profile = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button disabled={isLoading} onClick={updateUserHandler}>
-                  {isLoading ? (
+                <Button
+                  disabled={updateUserIsLoading}
+                  onClick={updateUserHandler}
+                >
+                  {updateUserIsLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please
                       Wait
