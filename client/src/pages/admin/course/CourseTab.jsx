@@ -19,6 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CourseTab = () => {
   const [input, setInput] = useState({
@@ -31,12 +33,15 @@ const CourseTab = () => {
     courseThumbnail: "",
   });
 
+  const navigate = useNavigate();
   const changeEventHandler = (e) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
 
   const isPublished = false;
+  const isLoading = false;
+
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -117,7 +122,7 @@ const CourseTab = () => {
             </div>
             <div>
               <Label>Course Level</Label>
-              <Select onValueChange={getSelectedCategory}>
+              <Select>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select course level" />
                 </SelectTrigger>
@@ -142,6 +147,25 @@ const CourseTab = () => {
                 className="w-fit"
               />
             </div>
+          </div>
+          <div>
+            <Label>Course Thumbnail</Label>
+            <Input type="file" accept="image/*" className="w-fit" />
+          </div>
+          <div>
+            <Button onClick={() => navigate("/admin/course")} variant="outline">
+              Cancel
+            </Button>
+            <Button disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait...
+                </>
+              ) : (
+                "Save"
+              )}
+            </Button>
           </div>
         </div>
       </CardContent>
