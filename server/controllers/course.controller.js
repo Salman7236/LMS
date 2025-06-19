@@ -162,7 +162,7 @@ export const createLecture = async (req, res) => {
 export const getCourseLecture = async (req, res) => {
   try {
     const { courseID } = req.params;
-    const course =  await Course.findById(courseID).populate("lectures");
+    const course = await Course.findById(courseID).populate("lectures");
     if (!course) {
       return res.status(404).json({
         message: "Course not found.",
@@ -175,6 +175,17 @@ export const getCourseLecture = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "Failed to get lectures :(",
+    });
+  }
+};
+
+export const editLecture = async (req, res) => {
+  try {
+    const { lectureTitle, videoInfo, isPreviewFree } = req.body;
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Failed to update lecture :(",
     });
   }
 };
