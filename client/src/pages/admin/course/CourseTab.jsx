@@ -21,7 +21,10 @@ import { Label } from "@/components/ui/label";
 import React, { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEditCourseMutation } from "@/features/api/courseApi";
+import {
+  useEditCourseMutation,
+  useGetCourseByIDQuery,
+} from "@/features/api/courseApi";
 import { toast } from "sonner";
 
 const CourseTab = () => {
@@ -35,10 +38,28 @@ const CourseTab = () => {
     courseThumbnail: "",
   });
 
-  const [previewThumbnail, setPreviewThumbnail] = useState("");
-  const navigate = useNavigate();
   const params = useParams();
   const courseID = params.courseID;
+  const { data: courseByIDData, isLoading: courseByIDIsLoading } =
+    useGetCourseByIDQuery(courseID);
+
+  useEffect(() => {
+    if (courseByIDData?.course) {
+      const course = courseByIDData?.course;
+      setInput({
+        courseTitle: course.courseTitle,
+        subtitle: course.subtitle,
+        description: course.description,
+        category: course.category,
+        courseLevel: course.courseLevel,
+        coursePrice: course.coursePrice,
+        courseThumbnail: "",
+      });
+    }
+  }, [courseByIDData]);
+
+  const [previewThumbnail, setPreviewThumbnail] = useState("");
+  const navigate = useNavigate();
 
   const [editCourse, { data, isLoading, isSuccess, error }] =
     useEditCourseMutation();
@@ -87,6 +108,8 @@ const CourseTab = () => {
       toast.error(error.data.message || "Failed to update course:(");
     }
   }, [isSuccess, error]);
+
+  if(courseByIDIsLoading) return <h1>Loading...</h1>
 
   const isPublished = false;
 
