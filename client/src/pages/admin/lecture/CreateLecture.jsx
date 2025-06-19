@@ -1,23 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useEffect, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import {
-  useCreateCourseMutation,
   useCreateLectureMutation,
+  useGetCourseLectureQuery,
 } from "@/features/api/courseApi";
 import { toast } from "sonner";
+import Lecture from "./lecture";
 
 const CreateLecture = () => {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -27,6 +19,12 @@ const CreateLecture = () => {
 
   const [createLecture, { data, isLoading, isSuccess, error }] =
     useCreateLectureMutation();
+
+  const {
+    data: lectureData,
+    isLoading: lectureIsLoading,
+    isError: lectureIsError,
+  } = useGetCourseLectureQuery({ courseID });
 
   const createLectureHandler = async () => {
     await createLecture({ lectureTitle, courseID });
@@ -40,6 +38,8 @@ const CreateLecture = () => {
       toast.error(error.data.message);
     }
   }, [isSuccess, error]);
+
+  console.log(lectureData);
 
   return (
     <div className="flex-1 mx-10">
@@ -75,6 +75,24 @@ const CreateLecture = () => {
               "Create lecture"
             )}
           </Button>
+        </div>
+        <div className="mt-10">
+          {lectureIsLoading ? (
+            <p>Loading lecture...</p>
+          ) : lectureIsError ? (
+            <p>Failed to load lectures</p>
+          ) : lectureData.lectures.length === 0 ? (
+            <p>No lectures available.</p>
+          ) : (
+            lectureData.lectures.map((lecture, index) => (
+              <Lecture
+                key={lecture._id}
+                lecture={lecture}
+                courseID={courseID}
+                index={index}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
