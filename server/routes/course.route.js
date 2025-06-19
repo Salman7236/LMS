@@ -4,9 +4,12 @@ import {
   createCourse,
   createLecture,
   editCourse,
+  editLecture,
   getCourseByID,
   getCourseLecture,
   getCreatorCourses,
+  getLectureByID,
+  removeLecture,
 } from "../controllers/course.controller.js";
 import upload from "../utils/multer.js";
 
@@ -20,5 +23,10 @@ router
 router.route("/:courseID").get(isAuthenticated, getCourseByID);
 router.route("/:courseID/lecture").post(isAuthenticated, createLecture);
 router.route("/:courseID/lecture").get(isAuthenticated, getCourseLecture);
+router
+  .route("/:courseID/lecture/:lectureID")
+  .post(isAuthenticated, editLecture);
+router.route("/lecture/:lectureID").delete(isAuthenticated, removeLecture);
+router.route("/lecture/:lectureID").get(isAuthenticated, getLectureByID);
 
 export default router;
