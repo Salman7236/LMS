@@ -2,6 +2,7 @@ import express from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import {
   createCourse,
+  createLecture,
   editCourse,
   getCourseByID,
   getCreatorCourses,
@@ -16,5 +17,6 @@ router
   .route("/:courseID")
   .put(isAuthenticated, upload.single("courseThumbnail"), editCourse);
 router.route("/:courseID").get(isAuthenticated, getCourseByID);
+router.route("/:courseID/lecture").post(isAuthenticated, createLecture);
 
 export default router;
