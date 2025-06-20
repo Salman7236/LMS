@@ -27,7 +27,7 @@ import {
 import DarkMode from "@/DarkMode";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogoutUserMutation } from "@/features/api/authAPI";
+import { useLogoutUserMutation } from "@/features/api/authApi.js";
 import { useSelector } from "react-redux";
 
 const navbar = () => {
@@ -50,9 +50,11 @@ const navbar = () => {
       <div className=" max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full ">
         <div className="flex items-center gap-2">
           <School size={"30"} />
-          <h1 className="hidden md:block font-extrabold text-2xl">
-            E-Learning
-          </h1>
+          <Link to='/'>
+            <h1 className="hidden md:block font-extrabold text-2xl">
+              E-Learning
+            </h1>
+          </Link>
         </div>
         {/* User icon and dark mode icon */}
         <div className="flex items-center gap-8">
