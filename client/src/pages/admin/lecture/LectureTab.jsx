@@ -15,10 +15,13 @@ import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 import {
   useEditLectureMutation,
+  useGetLectureByIDQuery,
   useRemoveLectureMutation,
 } from "@/features/api/courseApi";
 import { useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+
+const MEDIA_API = "http://localhost:8080/api/v1/media";
 
 const LectureTab = () => {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -30,7 +33,16 @@ const LectureTab = () => {
   const params = useParams();
   const { courseID, lectureID } = params;
 
-  const MEDIA_API = "http://localhost:8080/api/v1/media";
+  const { data: lectureData } = useGetLectureByIDQuery(lectureID);
+  const lecture = lectureData?.lecture;
+
+  useEffect(() => {
+    if (lecture) {
+      setLectureTitle(lecture.lectureTitle);
+      // setIsFree(lecture.isPreviewFree);
+      setUploadVideoInfo(lecture.videoInfo);
+    }
+  }, [lecture]);
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files[0];
@@ -156,8 +168,12 @@ const LectureTab = () => {
           />
         </div>
         <div className="flex items-center space-x-2 my-5">
-          <Switch id="For Free" />
-          <Label htmlFor="airplane-mode">For Free</Label>
+          <Switch
+            checked={isFree}
+            onCheckedChange={setIsFree}
+            id="video-free"
+          />
+          <Label htmlFor="video-free">Is this video free</Label>
         </div>
 
         {mediaProgress && (
@@ -169,7 +185,7 @@ const LectureTab = () => {
 
         <div className="mt-4 text-left">
           <Button disabled={isLoading} onClick={editLectureHandler}>
-            {IsLoading ? (
+            {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-2 w-4 animate-spin" />
                 Please wait...

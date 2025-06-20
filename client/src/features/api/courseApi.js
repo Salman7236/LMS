@@ -71,7 +71,13 @@ export const courseApi = createApi({
         url: `/lecture/${lectureID}`,
         method: "DELETE",
       }),
-      invalidatesTags:['Refetch_Lecture']
+      invalidatesTags: ["Refetch_Lecture"],
+    }),
+    getLectureByID: builder.query({
+      query: (lectureID) => ({
+        url: `/lecture/${lectureID}`,
+        method: "GET",
+      }),
     }),
   }),
 });
@@ -85,4 +91,5 @@ export const {
   useGetCourseLectureQuery,
   useEditLectureMutation,
   useRemoveLectureMutation,
+  useGetLectureByIDQuery,
 } = courseApi;

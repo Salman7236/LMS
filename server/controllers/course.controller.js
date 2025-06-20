@@ -192,9 +192,9 @@ export const editLecture = async (req, res) => {
 
     // Update Lecture
     if (lectureTitle) lecture.lectureTitle = lectureTitle;
-    // if (videoInfo.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
-    // if (videoInfo.publicID) lecture.publicID = videoInfo.publicID;
-    if (isPreviewFree) lecture.isPreviewFree = isPreviewFree;
+    if (videoInfo?.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
+    if (videoInfo?.publicID) lecture.publicID = videoInfo.publicID;
+    lecture.isPreviewFree = isPreviewFree;
 
     await lecture.save();
 
@@ -227,7 +227,7 @@ export const removeLecture = async (req, res) => {
     }
     // Delete lecture from cloudinary
     // if(lecture.publicID){
-    //   await deleteVideofromcloudina(lecture.publicID);
+    //   await deleteVideo from cloudinary(lecture.publicID);
     // }
 
     // Remove the lecture reference from the related course

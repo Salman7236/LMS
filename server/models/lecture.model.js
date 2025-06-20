@@ -11,8 +11,8 @@ const lectureSchema = new mongoose.Schema(
     },
     publicID: {
       type: String,
-      isPreviewFree: { type: Boolean },
     },
+    isPreviewFree: { type: Boolean },
   },
   { timestamps: true }
 );
