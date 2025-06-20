@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../utils/multer.js";
-// import {uploadmedai} from utils/cloudinar
+// import {upload media} from utils/cloudinary
 
 const router = express.Router();
 
